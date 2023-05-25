@@ -38,18 +38,19 @@ async def coin(message: types.Message):
     else:
         await message.reply("Решка")
 
-'''
+
 @dp.message_handler(content_types=['sticker'])
 async def send_sticker(message: types.Message):
-    sticker_text = str(message.sticker.file_id)
+    sticker_text = str(message.sticker.file_unique_id)
     print(sticker_text)
-    print('CAACAgIAAxkBAA' in sticker_text)
-    print('JgACf3zpSDKGlaQ5quGLLwQ' in sticker_text)
-    if 'CAACAgIAAxkBAA' in sticker_text and 'JgACf3zpSDKGlaQ5quGLLwQ' in sticker_text:
-        print(message.sticker.file_id)
-        await message.answer(message.sticker.file_id)
+    print(message.sticker.file_id)
+    if 'AgADrCYAAn986Ug' in sticker_text:
+        print(message.sticker.file_unique_id)
+        await message.reply("Техніка призову пацанів")
         await message.reply("@Andrii_piro @whosvamo @Spartakusich @BMaksymko @Gabenoh")
-'''
+        await bot.send_sticker(message.from_user.id,
+                               sticker='CAACAgIAAxkBAAEJGL1kbu-SQgJ9gFeXTw4iQOMVc4dHeAACrCoAAj358UjVz4vQxIJj4y8E')
+
 
 if __name__ == '__main__':
     executor.start_polling(dp)
