@@ -15,7 +15,7 @@ async def process_start_command(message: types.Message):
 
 
 @dp.message_handler(commands=['help'])
-async def process_start_command(message: types.Message):
+async def process_help_command(message: types.Message):
     await message.reply("Я вмію кликати всіх серйозних пацанів командою /all"
                         "\nрандомити число від 1 до 100 командою /roll"
                         "\nі кидати монетку командою /coin")
@@ -46,6 +46,14 @@ async def send_sticker(message: types.Message):
         await bot.send_message(message.chat.id, "@Andrii_piro @whosvamo @Spartakusich\n@BMaksymko @Gabenoh")
         await bot.send_sticker(message.chat.id,
                                sticker='CAACAgIAAxkBAAEJGL1kbu-SQgJ9gFeXTw4iQOMVc4dHeAACrCoAAj358UjVz4vQxIJj4y8E')
+
+
+@dp.message_handler(content_types=['text'])
+async def no_pon(message: types.Message):
+    text = str(message.text)
+    if 'пон' in text:
+        text = text.lower().replace('пон', 'зроз')
+        await message.reply(text)
 
 
 if __name__ == '__main__':
