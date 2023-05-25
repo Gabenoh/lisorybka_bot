@@ -50,7 +50,7 @@ async def send_sticker(message: types.Message):
 
 @dp.message_handler(content_types=['text'])
 async def no_pon(message: types.Message):
-    text = str(message.text)
+    text = str(message.text.lower())
     if 'пон' in text:
         text = text.lower().replace('пон', 'зроз')
         await message.reply(text)
