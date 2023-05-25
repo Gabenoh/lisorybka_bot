@@ -42,10 +42,7 @@ async def coin(message: types.Message):
 @dp.message_handler(content_types=['sticker'])
 async def send_sticker(message: types.Message):
     sticker_text = str(message.sticker.file_unique_id)
-    print(sticker_text)
-    print(message.sticker.file_id)
     if 'AgADrCYAAn986Ug' in sticker_text:
-        print(message.sticker.file_unique_id)
         await bot.send_message(message.from_user.id, "@Andrii_piro @whosvamo @Spartakusich\n @BMaksymko @Gabenoh")
         await bot.send_sticker(message.from_user.id,
                                sticker='CAACAgIAAxkBAAEJGL1kbu-SQgJ9gFeXTw4iQOMVc4dHeAACrCoAAj358UjVz4vQxIJj4y8E')
