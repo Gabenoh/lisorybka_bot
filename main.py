@@ -51,9 +51,17 @@ async def send_sticker(message: types.Message):
 @dp.message_handler(content_types=['text'])
 async def no_pon(message: types.Message):
     text = str(message.text.lower())
+    b_word = ['блядь', 'блять', 'бля', 'бло']
+
     if 'пон' in text:
         text = text.lower().replace('пон', 'зроз')
-        await message.reply(text)
+    if 'бл' in text:
+        bed_list = [x for x in b_word if x in text]
+        for i in bed_list:
+            text = text.lower().replace(i, 'курва')
+
+    if message.text.lower() != text:
+        await message.reply(text.capitalize())
 
 
 if __name__ == '__main__':
