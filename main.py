@@ -42,6 +42,8 @@ async def coin(message: types.Message):
 @dp.message_handler(content_types=['sticker'])
 async def send_sticker(message: types.Message):
     sticker_text = str(message.sticker.file_unique_id)
+    print(message.sticker.file_id)
+    print(sticker_text)
     if 'AgADrCYAAn986Ug' in sticker_text:
         await bot.send_message(message.chat.id, "@Andrii_piro @whosvamo @Spartakusich\n@BMaksymko @Gabenoh")
         await bot.send_sticker(message.chat.id,
@@ -59,6 +61,24 @@ async def no_pon(message: types.Message):
         bed_list = [x for x in b_word if x in text]
         for i in bed_list:
             text = text.lower().replace(i, 'курва')
+    if 'бачу' in text:
+        await message.reply('Поцілуй пизду собачу')
+
+    if 'кох' in text:
+        await bot.send_sticker(message.chat.id,
+                               sticker='CAACAgIAAxkBAAOeZK0CLtoc0_HNaPl9WA0BtTgbFXgAAuYqAAKK92BJX9FyadtyLNQvBA')
+        await bot.send_sticker(message.chat.id,
+                               sticker='CAACAgIAAxkBAAEJGL1kbu-SQgJ9gFeXTw4iQOMVc4dHeAACrCoAAj358UjVz4vQxIJj4y8E')
+    if 'танк' in text:
+        await bot.send_sticker(message.chat.id,
+                               sticker='CAACAgIAAxkBAAOeZK0CLtoc0_HNaPl9WA0BtTgbFXgAAuYqAAKK92BJX9FyadtyLNQvBA')
+        await bot.send_sticker(message.chat.id,
+                               sticker='CAACAgIAAxkBAAEJGL1kbu-SQgJ9gFeXTw4iQOMVc4dHeAACrCoAAj358UjVz4vQxIJj4y8E')
+    if 'батлу' in text:
+        await bot.send_sticker(message.chat.id,
+                               sticker='CAACAgIAAxkBAAOfZK0C3cX3DYZAjVKFg2xeYbAVQsIAArMyAAIGk2BJnizJKURunfovBA')
+        await bot.send_sticker(message.chat.id,
+                               sticker='CAACAgIAAxkBAAEJGL1kbu-SQgJ9gFeXTw4iQOMVc4dHeAACrCoAAj358UjVz4vQxIJj4y8E')
 
     if message.text.lower() != text:
         await message.reply(text.capitalize())
