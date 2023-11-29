@@ -1,3 +1,5 @@
+import time
+
 from aiogram import Bot, types
 from aiogram.dispatcher import Dispatcher
 from aiogram.utils import executor
@@ -41,10 +43,10 @@ async def coin(message: types.Message):
 
 @dp.message_handler(content_types=['sticker'])
 async def send_sticker(message: types.Message):
-    sticker_text = str(message.sticker.file_unique_id)
-    print(message.sticker.file_id)
-    print(sticker_text)
-    if 'AgADrCYAAn986Ug' in sticker_text:
+    sticker_unique_id = str(message.sticker.file_unique_id)
+    print(f'{message.sticker.file_id=}')
+    print(f'{sticker_unique_id=}')
+    if 'AgADrCYAAn986Ug' in sticker_unique_id:
         await bot.send_message(message.chat.id, "@Andrii_piro @whosvamo @Spartakusich\n@BMaksymko @Gabenoh")
         await bot.send_sticker(message.chat.id,
                                sticker='CAACAgIAAxkBAAEJGL1kbu-SQgJ9gFeXTw4iQOMVc4dHeAACrCoAAj358UjVz4vQxIJj4y8E')
@@ -57,28 +59,37 @@ async def no_pon(message: types.Message):
 
     if 'пон' in text:
         text = text.lower().replace('пон', 'зроз')
+
     if 'бл' in text:
         bed_list = [x for x in b_word if x in text]
         for i in bed_list:
             text = text.lower().replace(i, 'курва')
+
     if 'бачу' in text:
         await message.reply('Поцілуй пизду собачу')
 
-    if 'кох' in text:
+    if 'кох' in text or 'танк' in text:
         await bot.send_sticker(message.chat.id,
                                sticker='CAACAgIAAxkBAAOeZK0CLtoc0_HNaPl9WA0BtTgbFXgAAuYqAAKK92BJX9FyadtyLNQvBA')
-        await bot.send_sticker(message.chat.id,
-                               sticker='CAACAgIAAxkBAAEJGL1kbu-SQgJ9gFeXTw4iQOMVc4dHeAACrCoAAj358UjVz4vQxIJj4y8E')
-    if 'танк' in text:
-        await bot.send_sticker(message.chat.id,
-                               sticker='CAACAgIAAxkBAAOeZK0CLtoc0_HNaPl9WA0BtTgbFXgAAuYqAAKK92BJX9FyadtyLNQvBA')
-        await bot.send_sticker(message.chat.id,
-                               sticker='CAACAgIAAxkBAAEJGL1kbu-SQgJ9gFeXTw4iQOMVc4dHeAACrCoAAj358UjVz4vQxIJj4y8E')
+
     if 'батлу' in text:
         await bot.send_sticker(message.chat.id,
                                sticker='CAACAgIAAxkBAAOfZK0C3cX3DYZAjVKFg2xeYbAVQsIAArMyAAIGk2BJnizJKURunfovBA')
+
+    if 'пірат' in text:
         await bot.send_sticker(message.chat.id,
-                               sticker='CAACAgIAAxkBAAEJGL1kbu-SQgJ9gFeXTw4iQOMVc4dHeAACrCoAAj358UjVz4vQxIJj4y8E')
+                               sticker='CAACAgIAAxkBAAPxZWbigD0-RaWcELGPe9t0nB8kOqsAArckAAIEJMhKmnJeTf93OEEzBA')
+
+    if 'русал' in text:
+        await bot.send_sticker(message.chat.id,
+                               sticker='CAACAgIAAxkBAAPyZWbjRgnCZyLdK0lyLnUSjZlXaHMAAoAyAAIw-WFJvq2p5elOwKozBA')
+
+    if 'бот' in text:
+        await bot.send_sticker(message.chat.id,
+                               sticker='CAACAgIAAxkBAAPzZWbkOqd4zVdMKD80bTQOutjjyYkAAnYoAALntYlKOdIWpLZ0CigzBA')
+        time.sleep(5)
+        await bot.send_sticker(message.chat.id, reply_to_message_id=message.message_id,
+                               sticker='CAACAgIAAxkBAAP0ZWbktB2DKsmHJ3hKYIxJG13vqcIAAl0cAAI9sslKVWZjClrvb74zBA')
 
     if message.text.lower() != text:
         await message.reply(text.capitalize())
