@@ -1,1 +1,8 @@
 /config/token.py
+/venv
+
+# IntelliJ project files
+.idea
+*.iml
+out
+gen
