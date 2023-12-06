@@ -71,6 +71,7 @@ async def no_pon(message: types.Message):
     if 'кох' in text or 'танк' in text:
         await bot.send_sticker(message.chat.id,
                                sticker='CAACAgIAAxkBAAOeZK0CLtoc0_HNaPl9WA0BtTgbFXgAAuYqAAKK92BJX9FyadtyLNQvBA')
+        await message.reply("@Andrii_piro @BMaksymko @Gabenoh")
 
     if 'батлу' in text:
         await bot.send_sticker(message.chat.id,
@@ -79,17 +80,21 @@ async def no_pon(message: types.Message):
     if 'пірат' in text:
         await bot.send_sticker(message.chat.id,
                                sticker='CAACAgIAAxkBAAPxZWbigD0-RaWcELGPe9t0nB8kOqsAArckAAIEJMhKmnJeTf93OEEzBA')
+        await message.reply("@Andrii_piro @whosvamo @Spartakusich @Gabenoh")
 
     if 'русал' in text:
         await bot.send_sticker(message.chat.id,
                                sticker='CAACAgIAAxkBAAPyZWbjRgnCZyLdK0lyLnUSjZlXaHMAAoAyAAIw-WFJvq2p5elOwKozBA')
 
-    if 'бот' in text:
+    if 'дота' in text or 'дока' in text or 'доту' in text:
         await bot.send_sticker(message.chat.id,
-                               sticker='CAACAgIAAxkBAAPzZWbkOqd4zVdMKD80bTQOutjjyYkAAnYoAALntYlKOdIWpLZ0CigzBA')
-        time.sleep(5)
+                               'CAACAgIAAxkBAAIBEmVtbX6iOMQ_2nT1PHEBXvquE1aUAALOJQACXTHISk7d_95TWVk9MwQ')
+        await message.reply("@Andrii_piro @BMaksymko @Spartakusich @Gabenoh")
+
+    if 'бот' in text:
+        time.sleep(15)
         await bot.send_sticker(message.chat.id, reply_to_message_id=message.message_id,
-                               sticker='CAACAgIAAxkBAAP0ZWbktB2DKsmHJ3hKYIxJG13vqcIAAl0cAAI9sslKVWZjClrvb74zBA')
+                               sticker='CAACAgIAAxkBAAIBGWVu00tun_zbnhY65Of_SDUJ79QsAAKlPAACYzlxS1Ag9N0wqaMNMwQ')
 
     if message.text.lower() != text:
         await message.reply(text.capitalize())
