@@ -71,7 +71,7 @@ async def no_pon(message: types.Message):
     if 'кох' in text or 'танк' in text:
         await bot.send_sticker(message.chat.id,
                                sticker='CAACAgIAAxkBAAOeZK0CLtoc0_HNaPl9WA0BtTgbFXgAAuYqAAKK92BJX9FyadtyLNQvBA')
-        await message.reply("@Andrii_piro @BMaksymko @Gabenoh")
+        await message.reply("@Andrii_piro @BMaksymko @Gabenoh @Spartakusich")
 
     if 'батлу' in text:
         await bot.send_sticker(message.chat.id,
@@ -95,6 +95,9 @@ async def no_pon(message: types.Message):
         time.sleep(15)
         await bot.send_sticker(message.chat.id, reply_to_message_id=message.message_id,
                                sticker='CAACAgIAAxkBAAIBGWVu00tun_zbnhY65Of_SDUJ79QsAAKlPAACYzlxS1Ag9N0wqaMNMwQ')
+
+    if 'фортнайт' in text or 'форточка' in text or 'дітей' in text:
+        await message.reply("@Andrii_piro @BMaksymko @Spartakusich @Gabenoh @whosvamo")
 
     if message.text.lower() != text:
         await message.reply(text.capitalize())
