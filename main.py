@@ -97,7 +97,7 @@ async def no_pon(message: types.Message):
                                sticker='CAACAgIAAxkBAAIBGWVu00tun_zbnhY65Of_SDUJ79QsAAKlPAACYzlxS1Ag9N0wqaMNMwQ')
 
     if 'фортнайт' in text or 'форточка' in text or 'дітей' in text:
-        await message.reply("@Andrii_piro @BMaksymko @Spartakusich @Gabenoh @whosvamo")
+        await message.reply("Їбуни дітей общий збір\n@Andrii_piro @BMaksymko @Spartakusich @Gabenoh @whosvamo")
 
     if message.text.lower() != text:
         await message.reply(text.capitalize())
