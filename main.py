@@ -96,7 +96,7 @@ async def no_pon(message: types.Message):
         await bot.send_sticker(message.chat.id, reply_to_message_id=message.message_id,
                                sticker='CAACAgIAAxkBAAIBGWVu00tun_zbnhY65Of_SDUJ79QsAAKlPAACYzlxS1Ag9N0wqaMNMwQ')
 
-    if 'фортнайт' in text or 'форточка' in text or 'дітей' in text:
+    if 'фортнайт' in text or 'форточк' in text or 'дітей' in text or 'школот' in text:
         await message.reply("Їбуни дітей общий збір\n@Andrii_piro @BMaksymko @Spartakusich @Gabenoh @whosvamo")
 
     if message.text.lower() != text:
