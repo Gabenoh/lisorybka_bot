@@ -103,12 +103,15 @@ async def no_pon(message: types.Message):
 
     if 'погода' in text:
         if len(text.split(' ')) >= 2:
-            city_name = text.split(' ')[text.index('погода')+1]
+            city_name = text.split(' ')[text.index('погода') + 1]
             data = await weather(city_name)
-            await message.reply(
-                (f'Погода в {city_name}:\nТемпература: {round(float(data["main"]["temp"]) - 273.15, 1)}°C'
-                 f'\nВологість: {data["main"]["humidity"]}%\n'
-                 f"Стан неба: {data['weather'][0]['description']}"))
+            if data is not None:
+                await message.reply(
+                    (f'Погода в {city_name}:\nТемпература: {round(float(data["main"]["temp"]) - 273.15, 1)}°C'
+                     f'\nВологість: {data["main"]["humidity"]}%\n'
+                     f"Стан неба: {data['weather'][0]['description']}"))
+            else:
+                await message.reply(f'Не знаю я такого міста {city_name}')
         else:
             await message.reply('де де тобі погоду сказати,\nнормально напиши')
 

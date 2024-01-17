@@ -20,10 +20,10 @@ async def get_weather(api_key, city):
 async def weather(city):
     if 'галич' in city:
         city = 'Halych'
+    if 'залукв' in city:
+        city = 'Zalukva'
     elif 'київ' in city or 'києв' in city:
         city = 'Kyiv'
-    else:
-        city = 'Halych'
     api_key = '28d01a5b5da84e181577bf27a32bc5d9'
     data = await get_weather(api_key, city)
     return data
