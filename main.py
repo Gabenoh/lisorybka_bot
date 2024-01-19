@@ -1,4 +1,3 @@
-import asyncio
 import time
 
 from aiogram import Bot, types
@@ -106,11 +105,11 @@ async def no_pon(message: types.Message):
 
     if 'погода' in text:
         if len(text.split(' ')) >= 2:
-            city_name = text.split(' ')[text.index('погода') + 1]
+            city_name = text.split(' ')[text.split(' ').index('погода') + 1]
             data = await weather(city_name)
             if data is not None:
                 await message.reply(
-                    (f'Погода в {city_name}:\nТемпература: {round(float(data["main"]["temp"]) - 273.15, 1)}°C'
+                    (f'Погода в {data["name"]}:\nТемпература: {round(float(data["main"]["temp"]) - 273.15, 0)}°C'
                      f'\nВологість: {data["main"]["humidity"]}%\n'
                      f"Стан неба: {data['weather'][0]['description']}"))
             else:
