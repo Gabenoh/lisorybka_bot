@@ -1,10 +1,12 @@
 import time
-
+import aiohttp
+from aiogram.utils.markdown import hide_link
 from aiogram import Bot, types
 from aiogram.dispatcher import Dispatcher
 from aiogram.utils import executor
+from aiogram.types import InputFile
 import random as rd
-from tools import weather
+from tools import weather, waifu
 from config import Token
 
 bot = Bot(token=Token)
@@ -90,7 +92,11 @@ async def no_pon(message: types.Message):
         await bot.send_sticker(message.chat.id,
                                sticker='CAACAgIAAxkBAAPyZWbjRgnCZyLdK0lyLnUSjZlXaHMAAoAyAAIw-WFJvq2p5elOwKozBA')
 
-    if 'дота' in text or 'дока' in text or 'доту' in text:
+    if 'аніме' in text or 'anime' in text or 'тян' in text or 'дівчин' in text or 'жін' in text:
+        image_url = await waifu()
+        await message.reply_photo(image_url)
+
+    if 'дота' in text or 'дока' in text or 'доту' in text or 'доку' in text:
         await bot.send_sticker(message.chat.id,
                                'CAACAgIAAxkBAAIBEmVtbX6iOMQ_2nT1PHEBXvquE1aUAALOJQACXTHISk7d_95TWVk9MwQ')
         await message.reply("@Andrii_piro @BMaksymko @Spartakusich @Gabenoh")
