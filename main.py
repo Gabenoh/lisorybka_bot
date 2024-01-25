@@ -1,10 +1,6 @@
-import time
-import aiohttp
-from aiogram.utils.markdown import hide_link
 from aiogram import Bot, types
 from aiogram.dispatcher import Dispatcher
 from aiogram.utils import executor
-from aiogram.types import InputFile
 import random as rd
 from tools import weather, waifu
 from config import Token
@@ -101,10 +97,7 @@ async def no_pon(message: types.Message):
                                'CAACAgIAAxkBAAIBEmVtbX6iOMQ_2nT1PHEBXvquE1aUAALOJQACXTHISk7d_95TWVk9MwQ')
         await message.reply("@Andrii_piro @BMaksymko @Spartakusich @Gabenoh")
 
-    if 'бот' in text:
-        time.sleep(15)
-        await bot.send_sticker(message.chat.id, reply_to_message_id=message.message_id,
-                               sticker='CAACAgIAAxkBAAIBGWVu00tun_zbnhY65Of_SDUJ79QsAAKlPAACYzlxS1Ag9N0wqaMNMwQ')
+    # if 'бот' in text:
 
     if 'фортнайт' in text or 'форточк' in text or 'дітей' in text or 'школот' in text:
         await message.reply("Їбуни дітей общий збір\n@Andrii_piro @BMaksymko @Spartakusich @Gabenoh @whosvamo")
