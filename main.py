@@ -88,7 +88,7 @@ async def no_pon(message: types.Message):
         await bot.send_sticker(message.chat.id,
                                sticker='CAACAgIAAxkBAAPyZWbjRgnCZyLdK0lyLnUSjZlXaHMAAoAyAAIw-WFJvq2p5elOwKozBA')
 
-    if 'аніме' in text or 'anime' in text or 'тян' in text or 'дівчин' in text or 'жін' in text:
+    if 'аніме' in text or 'anime' in text or 'тян' in text or 'дівчин' in text or 'хент' in text:
         image_url = await waifu()
         await message.reply_photo(image_url)
 

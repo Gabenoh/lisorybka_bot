@@ -5,7 +5,6 @@ import asyncio
 async def search_waifu():
     url = 'https://api.waifu.im/search'
     params = {
-        'included_tags': ['maid'],
         'height': '>=1000',
         'is_nsfw': 'null'
     }
