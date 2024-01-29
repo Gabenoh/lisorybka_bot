@@ -4,6 +4,11 @@ from aiogram.utils import executor
 import random as rd
 from tools import weather, waifu
 from config import Token
+import logging
+
+
+logging.basicConfig(filename='/home/galmed/lisorybka_bot/logs/bot.log', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logging.info('Програма розпочала роботу')
 
 bot = Bot(token=Token)
 dp = Dispatcher(bot)
@@ -42,8 +47,8 @@ async def coin(message: types.Message):
 @dp.message_handler(content_types=['sticker'])
 async def send_sticker(message: types.Message):
     sticker_unique_id = str(message.sticker.file_unique_id)
-    print(f'{message.sticker.file_id=}')
-    print(f'{sticker_unique_id=}')
+    logging.info(f'{message.sticker.file_id=}')
+    logging.info(f'{sticker_unique_id=}')
     if 'AgADrCYAAn986Ug' in sticker_unique_id:
         await bot.send_message(message.chat.id, "@Andrii_piro @whosvamo @Spartakusich\n@BMaksymko @Gabenoh")
         await bot.send_sticker(message.chat.id,
@@ -90,14 +95,21 @@ async def no_pon(message: types.Message):
 
     if 'аніме' in text or 'anime' in text or 'тян' in text or 'дівчин' in text or 'хент' in text:
         image_url = await waifu()
-        await message.reply_photo(image_url)
+        try:
+            await message.reply_photo(image_url)
+        except Exception as e:
+            logging.info(f'Помилка при виконанні запиту: {e}')
+            image_url = await waifu()
+            await message.reply_photo(image_url)
 
     if 'дота' in text or 'дока' in text or 'доту' in text or 'доку' in text:
         await bot.send_sticker(message.chat.id,
                                'CAACAgIAAxkBAAIBEmVtbX6iOMQ_2nT1PHEBXvquE1aUAALOJQACXTHISk7d_95TWVk9MwQ')
         await message.reply("@Andrii_piro @BMaksymko @Spartakusich @Gabenoh")
 
-    # if 'бот' in text:
+    if 'бот' in text:
+        await bot.send_sticker(message.chat.id,
+                               'CAACAgIAAxkBAAIDkmW3Yor2nSQ-Oo6FlDQ6DMttDcrOAAKlPAACYzlxS1Ag9N0wqaMNNAQ')
 
     if 'фортнайт' in text or 'форточк' in text or 'дітей' in text or 'школот' in text:
         await message.reply("Їбуни дітей общий збір\n@Andrii_piro @BMaksymko @Spartakusich @Gabenoh @whosvamo")
@@ -119,3 +131,4 @@ async def no_pon(message: types.Message):
 
 if __name__ == '__main__':
     executor.start_polling(dp)
+    logging.info('Програма завершила роботу')

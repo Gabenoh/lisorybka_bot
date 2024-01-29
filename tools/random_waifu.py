@@ -1,13 +1,25 @@
 import aiohttp
 import asyncio
+import random
+import logging
+
+
+logging.basicConfig(filename='/home/galmed/lisorybka_bot/logs/bot.log', level=logging.INFO,
+                    format='%(asctime)s - %(levelname)s - %(message)s')
 
 
 async def search_waifu():
     url = 'https://api.waifu.im/search'
-    params = {
-        'height': '>=1000',
-        'is_nsfw': 'null'
-    }
+    if random.randint(0, 10) >= 7:
+        params = {
+            'height': '>=500',
+            'is_nsfw': 'true'
+        }
+    else:
+        params = {
+            'height': '>=500',
+            'is_nsfw': 'false'
+        }
 
     try:
         async with aiohttp.ClientSession() as session:
@@ -16,7 +28,7 @@ async def search_waifu():
                 data = await response.json()
                 return data['images'][0]['url']
     except aiohttp.ClientError as e:
-        print(f'Помилка при виконанні запиту: {e}')
+        logging.info(f'Помилка при виконанні запиту: {e}')
         return None
 
 
@@ -25,10 +37,10 @@ async def waifu():
 
     if result:
         # Обробляємо результат за потреби
-        print(result)
+        logging.info(result)
         return result
     else:
-        print('Не вдалося здійснити запит.')
+        logging.info('Не вдалося здійснити запит.')
 
 
 if __name__ == "__main__":
