@@ -11,6 +11,7 @@ logging.basicConfig(filename='/home/galmed/lisorybka_bot/logs/bot.log', level=lo
                     format='%(asctime)s - %(levelname)s - %(message)s')
 logging.info('Програма розпочала роботу')
 
+
 bot = Bot(token=Token)
 dp = Dispatcher(bot)
 
@@ -111,6 +112,11 @@ async def no_pon(message: types.Message):
     if 'бот' in text:
         await bot.send_sticker(message.chat.id,
                                'CAACAgIAAxkBAAIDkmW3Yor2nSQ-Oo6FlDQ6DMttDcrOAAKlPAACYzlxS1Ag9N0wqaMNNAQ')
+
+    if 'тиса' in text or 'ухилянт' in text:
+        await message.reply(f'Ухилянт {message.from_user.username} підійшов до берега Тиси, тут її ширина була '
+                            f'150 метрів! Голий та відчайдушний він зміг проплисти {rd.randint(50, 200)}'
+                            f' метрів до берегів Європи.')
 
     if 'фортнайт' in text or 'форточк' in text or 'дітей' in text or 'школот' in text:
         await message.reply("Їбуни дітей общий збір\n@Andrii_piro @BMaksymko @Spartakusich @Gabenoh @whosvamo")

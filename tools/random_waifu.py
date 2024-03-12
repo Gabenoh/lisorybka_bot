@@ -36,7 +36,6 @@ async def waifu():
     result = await search_waifu()
 
     if result:
-        # Обробляємо результат за потреби
         logging.info(result)
         return result
     else:
