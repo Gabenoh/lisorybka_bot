@@ -40,10 +40,7 @@ async def roll(message: types.Message):
 
 @dp.message_handler(commands=['coin'])
 async def coin(message: types.Message):
-    if rd.randint(1, 100) > 50:
-        await message.reply("Орел")
-    else:
-        await message.reply("Решка")
+    await message.reply(rd.choice("Орел", "Решка"))
 
 
 @dp.message_handler(content_types=['sticker'])
@@ -65,7 +62,7 @@ async def no_pon(message: types.Message):
     if 'пон' in text:
         text = text.lower().replace('пон', 'зроз')
 
-    if 'бл' in text:
+    if 'бля' in text or "бло" in text:
         bed_list = [x for x in b_word if x in text]
         for i in bed_list:
             text = text.lower().replace(i, 'курва')
@@ -113,10 +110,14 @@ async def no_pon(message: types.Message):
         await bot.send_sticker(message.chat.id,
                                'CAACAgIAAxkBAAIDkmW3Yor2nSQ-Oo6FlDQ6DMttDcrOAAKlPAACYzlxS1Ag9N0wqaMNNAQ')
 
-    if 'тиса' in text or 'ухилянт' in text:
+    if 'тис' in text or 'ухилянт' in text:
         await message.reply(f'Ухилянт {message.from_user.username} підійшов до берега Тиси, тут її ширина була '
-                            f'150 метрів! Голий та відчайдушний він зміг проплисти {rd.randint(50, 200)}'
-                            f' метрів до берегів Європи.')
+                            f'{rd.randint(120, 180)} метрів! Голий та відчайдушний'
+                            f' він зміг проплисти {rd.randint(40, 200)} метрів до берегів Європи.')
+
+    if 'тцк' in text or 'атб' in text:
+            await message.reply(f'Ухилянт {message.from_user.username} пішов в АТБ але там було ТЦК, почавши тікати'
+                                f' на {rd.randint(10, 300)} метрах {rd.choice(("все таки зміг утекти", "ТЦК спіймало ухилянта  Press F"))}')
 
     if 'фортнайт' in text or 'форточк' in text or 'дітей' in text or 'школот' in text:
         await message.reply("Їбуни дітей общий збір\n@Andrii_piro @BMaksymko @Spartakusich @Gabenoh @whosvamo")
