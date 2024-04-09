@@ -6,11 +6,9 @@ from tools import weather, waifu
 from config import Token
 import logging
 
-
 logging.basicConfig(filename='/home/galmed/lisorybka_bot/logs/bot.log', level=logging.INFO,
                     format='%(asctime)s - %(levelname)s - %(message)s')
 logging.info('Програма розпочала роботу')
-
 
 bot = Bot(token=Token)
 dp = Dispatcher(bot)
@@ -92,13 +90,28 @@ async def no_pon(message: types.Message):
         await bot.send_sticker(message.chat.id,
                                sticker='CAACAgIAAxkBAAPyZWbjRgnCZyLdK0lyLnUSjZlXaHMAAoAyAAIw-WFJvq2p5elOwKozBA')
 
-    if 'аніме' in text or 'anime' in text or 'тян' in text or 'дівчин' in text or 'хент' in text:
+    if 'аніме' in text or 'anime' in text or 'тян' in text or 'дівчин' in text:
+        '''
+        await message.reply('Пізда тянок поки викрали!\nлови найкращу тян всіх часів і народів!')
+        with open('/home/galmed/lisorybka_bot/im/1.webp', 'rb') as photo_file:
+            await bot.send_photo(chat_id=message.chat.id, photo=photo_file)
+
+        '''
         image_url = await waifu()
         try:
             await message.reply_photo(image_url)
         except Exception as e:
             logging.info(f'Помилка при виконанні запиту: {e}')
             image_url = await waifu()
+            await message.reply_photo(image_url)
+
+    if 'хент' in text or 'прон' in text or 'порн' in text:
+        image_url = await waifu(is_nsfw=True)
+        try:
+            await message.reply_photo(image_url)
+        except Exception as e:
+            logging.info(f'Помилка при виконанні запиту: {e}')
+            image_url = await waifu(is_nsfw=True)
             await message.reply_photo(image_url)
 
     if 'дота' in text or 'дока' in text or 'доту' in text or 'доку' in text:
@@ -116,8 +129,8 @@ async def no_pon(message: types.Message):
                             f' він зміг проплисти {rd.randint(40, 200)} метрів до берегів Європи.')
 
     if 'тцк' in text or 'атб' in text:
-            await message.reply(f'Ухилянт {message.from_user.username} пішов в АТБ але там було ТЦК, почавши тікати'
-                                f' на {rd.randint(10, 300)} метрах {rd.choice(("все таки зміг утекти", "ТЦК спіймало ухилянта  Press F"))}')
+        await message.reply(f'Ухилянт {message.from_user.username} пішов в АТБ але там було ТЦК, почавши тікати'
+                            f' на {rd.randint(10, 300)} метрах {rd.choice(("все таки зміг утекти", "ТЦК спіймало ухилянта  Press F"))}')
 
     if 'фортнайт' in text or 'форточк' in text or 'дітей' in text or 'школот' in text:
         await message.reply("Їбуни дітей общий збір\n@Andrii_piro @BMaksymko @Spartakusich @Gabenoh @whosvamo")
