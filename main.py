@@ -38,7 +38,7 @@ async def roll(message: types.Message):
 
 @dp.message_handler(commands=['coin'])
 async def coin(message: types.Message):
-    await message.reply(rd.choice("Орел", "Решка"))
+    await message.reply(rd.choice(seq=("Орел", "Решка")))
 
 
 @dp.message_handler(content_types=['sticker'])
@@ -114,7 +114,7 @@ async def no_pon(message: types.Message):
             image_url = await waifu(is_nsfw=True)
             await message.reply_photo(image_url)
 
-    if 'дота' in text or 'дока' in text or 'доту' in text or 'доку' in text:
+    if 'дота' in text or 'дока' in text or 'доту' in text or 'доку' in text or 'доки' in text:
         await bot.send_sticker(message.chat.id,
                                'CAACAgIAAxkBAAIBEmVtbX6iOMQ_2nT1PHEBXvquE1aUAALOJQACXTHISk7d_95TWVk9MwQ')
         await message.reply("@Andrii_piro @BMaksymko @Spartakusich @Gabenoh")
