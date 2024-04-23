@@ -114,7 +114,7 @@ async def no_pon(message: types.Message):
             image_url = await waifu(is_nsfw=True)
             await message.reply_photo(image_url)
 
-    if 'дота' in text or 'дока' in text or 'доту' in text or 'доку' in text or 'доки' in text:
+    if 'дота' in text or 'дока' in text or 'доту' in text or 'доку' in text or 'доти' in text:
         await bot.send_sticker(message.chat.id,
                                'CAACAgIAAxkBAAIBEmVtbX6iOMQ_2nT1PHEBXvquE1aUAALOJQACXTHISk7d_95TWVk9MwQ')
         await message.reply("@Andrii_piro @BMaksymko @Spartakusich @Gabenoh")
@@ -122,6 +122,11 @@ async def no_pon(message: types.Message):
     if 'бот' in text:
         await bot.send_sticker(message.chat.id,
                                'CAACAgIAAxkBAAIDkmW3Yor2nSQ-Oo6FlDQ6DMttDcrOAAKlPAACYzlxS1Ag9N0wqaMNNAQ')
+
+    if 'валь' in text or 'вікін' in text or 'valheim' in text:
+        await bot.send_sticker(message.chat.id,
+                               'CAACAgIAAxkBAAIErGYnW04qU3UmP-rRmkVOkxvruQ9EAAJRSAACXOtASa2og9dwzDFGNAQ')
+        await link_all(message)
 
     if 'тис' in text or 'ухилянт' in text:
         await message.reply(f'Ухилянт {message.from_user.username} підійшов до берега Тиси, тут її ширина була '
