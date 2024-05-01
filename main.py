@@ -125,17 +125,25 @@ async def no_pon(message: types.Message):
 
     if 'валь' in text or 'вікін' in text or 'valheim' in text:
         await bot.send_sticker(message.chat.id,
-                               'CAACAgIAAxkBAAIErGYnW04qU3UmP-rRmkVOkxvruQ9EAAJRSAACXOtASa2og9dwzDFGNAQ')
+                               'CAACAgIAAx0CYWKKdQACUt9mKPJJRkb50msNd6V45SvDE2dZNgACSlAAAllXQEkLlBd0sk9o8DQE')
         await link_all(message)
 
     if 'тис' in text or 'ухилянт' in text:
+        river_len, swim_len = rd.randint(120, 180), rd.randint(40, 200)
         await message.reply(f'Ухилянт {message.from_user.username} підійшов до берега Тиси, тут її ширина була '
-                            f'{rd.randint(120, 180)} метрів! Голий та відчайдушний'
-                            f' він зміг проплисти {rd.randint(40, 200)} метрів до берегів Європи.')
+                            f'{river_len} метрів! Голий та відчайдушний'
+                            f' він зміг проплисти {swim_len} метрів до берегів Європи.')
+        if swim_len < river_len:
+            await bot.send_sticker(message.chat.id,
+                                   'CAACAgIAAxkBAAIEvWYyK7hH3rjcVAABdszbl6ynOpynLAACZEwAAu4QiEnAQoDbVoM0-TQE')
 
     if 'тцк' in text or 'атб' in text:
+        choice = rd.choice(("все таки зміг утекти", "ТЦК спіймало ухилянта  Press F"))
         await message.reply(f'Ухилянт {message.from_user.username} пішов в АТБ але там було ТЦК, почавши тікати'
-                            f' на {rd.randint(10, 300)} метрах {rd.choice(("все таки зміг утекти", "ТЦК спіймало ухилянта  Press F"))}')
+                            f' на {rd.randint(10, 300)} метрах {choice}')
+        if choice == 'ТЦК спіймало ухилянта  Press F':
+            await bot.send_sticker(message.chat.id,
+                                   'CAACAgIAAxkBAAIEvWYyK7hH3rjcVAABdszbl6ynOpynLAACZEwAAu4QiEnAQoDbVoM0-TQE')
 
     if 'фортнайт' in text or 'форточк' in text or 'дітей' in text or 'школот' in text:
         await message.reply("Їбуни дітей общий збір\n@Andrii_piro @BMaksymko @Spartakusich @Gabenoh @whosvamo")
