@@ -10,7 +10,7 @@ logging.basicConfig(filename='/home/galmed/lisorybka_bot/logs/bot.log', level=lo
 
 async def search_waifu(is_nsfw=False):
     url = 'https://api.waifu.im/search'
-    if random.randint(0, 10) >= 8 or is_nsfw:
+    if random.randint(0, 10) >= 9 or is_nsfw:
         params = {
             'height': '>=500',
             'is_nsfw': 'true'

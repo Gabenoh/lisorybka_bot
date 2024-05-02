@@ -128,7 +128,7 @@ async def no_pon(message: types.Message):
                                'CAACAgIAAx0CYWKKdQACUt9mKPJJRkb50msNd6V45SvDE2dZNgACSlAAAllXQEkLlBd0sk9o8DQE')
         await link_all(message)
 
-    if 'тис' in text or 'ухилянт' in text:
+    if 'тиса' in text or 'ухилянт' in text or 'тису' in text:
         river_len, swim_len = rd.randint(120, 180), rd.randint(40, 200)
         await message.reply(f'Ухилянт {message.from_user.username} підійшов до берега Тиси, тут її ширина була '
                             f'{river_len} метрів! Голий та відчайдушний'
