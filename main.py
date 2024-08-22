@@ -119,6 +119,11 @@ async def no_pon(message: types.Message):
                                'CAACAgIAAxkBAAIBEmVtbX6iOMQ_2nT1PHEBXvquE1aUAALOJQACXTHISk7d_95TWVk9MwQ')
         await message.reply("@Andrii_piro @BMaksymko @Spartakusich @Gabenoh")
 
+    if 'ксго' in text or 'каес' in text or 'контру' in text or 'csgo' in text:
+            await bot.send_sticker(message.chat.id,
+                                   'CAACAgIAAxkBAAIFUGbG9MNjI10y7diASU3XBBs-7ZjBAALzTwACdVo4SiNkibf6RrqnNQQ')
+            await message.reply("@Andrii_piro @BMaksymko @Spartakusich @Gabenoh")
+
     if 'бот' in text:
         await bot.send_sticker(message.chat.id,
                                'CAACAgIAAxkBAAIDkmW3Yor2nSQ-Oo6FlDQ6DMttDcrOAAKlPAACYzlxS1Ag9N0wqaMNNAQ')
