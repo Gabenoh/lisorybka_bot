@@ -119,7 +119,7 @@ async def no_pon(message: types.Message):
                                'CAACAgIAAxkBAAIBEmVtbX6iOMQ_2nT1PHEBXvquE1aUAALOJQACXTHISk7d_95TWVk9MwQ')
         await message.reply("@Andrii_piro @BMaksymko @Spartakusich @Gabenoh")
 
-    if 'ксго' in text or 'каес' in text or 'контру' in text or 'csgo' in text:
+    if 'ксго' in text or 'каес' in text or 'контру' in text or 'csgo' in text or 'кс го' in text or 'го кс' in text:
             await bot.send_sticker(message.chat.id,
                                    'CAACAgIAAxkBAAIFUGbG9MNjI10y7diASU3XBBs-7ZjBAALzTwACdVo4SiNkibf6RrqnNQQ')
             await message.reply("@Andrii_piro @BMaksymko @Spartakusich @Gabenoh")
@@ -131,6 +131,11 @@ async def no_pon(message: types.Message):
     if 'валь' in text or 'вікін' in text or 'valheim' in text:
         await bot.send_sticker(message.chat.id,
                                'CAACAgIAAx0CYWKKdQACUt9mKPJJRkb50msNd6V45SvDE2dZNgACSlAAAllXQEkLlBd0sk9o8DQE')
+        await link_all(message)
+
+    if 'космос' in text or 'завод' in text or 'фактор' in text or 'факпор' in text:
+        await bot.send_sticker(message.chat.id,
+                               'CAACAgIAAxkBAAIFamcGJ9uOivSHvNguwttIwx9ZSK2jAAL7JgACOR1wSzI0RWtkz1qFNgQ')
         await link_all(message)
 
     if 'тиса' in text or 'ухилянт' in text or 'тису' in text:
