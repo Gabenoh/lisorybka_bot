@@ -114,6 +114,13 @@ async def no_pon(message: types.Message):
             image_url = await waifu(is_nsfw=True)
             await message.reply_photo(image_url)
 
+    if 'kwad' in text or 'бобер' in text or 'квад' in text:
+        try:
+            with open('/home/galmed/lisorybka_bot/im/kvadrobober.jpg', 'rb') as photo_file:
+                await bot.send_photo(chat_id=message.chat.id, photo=photo_file)
+        except Exception as e:
+            logging.info(f'Помилка при виконанні запиту: {e}')
+
     if 'дота' in text or 'дока' in text or 'доту' in text or 'доку' in text or 'доти' in text:
         await bot.send_sticker(message.chat.id,
                                'CAACAgIAAxkBAAIBEmVtbX6iOMQ_2nT1PHEBXvquE1aUAALOJQACXTHISk7d_95TWVk9MwQ')
