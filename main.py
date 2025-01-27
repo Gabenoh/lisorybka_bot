@@ -2,9 +2,13 @@ from aiogram import Bot, types
 from aiogram.dispatcher import Dispatcher
 from aiogram.utils import executor
 import random as rd
-from tools import weather, waifu
+from tools import weather, waifu, download_tiktok_video, fetch_instagram_video_url
 from config import Token
 import logging
+import re
+import aiohttp
+from aiofiles import open as aio_open
+
 
 logging.basicConfig(filename='/home/galmed/lisorybka_bot/logs/bot.log', level=logging.INFO,
                     format='%(asctime)s - %(levelname)s - %(message)s')
@@ -54,8 +58,34 @@ async def send_sticker(message: types.Message):
 
 @dp.message_handler(content_types=['text'])
 async def no_pon(message: types.Message):
+    url_text = str(message.text)
     text = str(message.text.lower())
     b_word = ['блядь', 'блять', 'бля', 'бло']
+
+    tiktok_url_pattern = r"(https?://)?(www\.)?(vm\.tiktok\.com/\w+|tiktok\.com/.+)"
+    instagram_pattern = r"https?://(?:www\.)?instagram\.com/(?:reel|reels|share/reel)/([a-zA-Z0-9_-]+)/?"
+    tik_tok_match = re.search(tiktok_url_pattern, url_text)
+    instagram_match = re.search(instagram_pattern, url_text)
+    if tik_tok_match:
+
+        try:
+            # Асинхронне завантаження відео
+            video_path = await download_tiktok_video(tik_tok_match.group())
+            await message.reply(video_path)
+        except Exception as e:
+            # await message.reply(f"Сталася помилка: {str(e)}")
+            pass
+
+    if instagram_match:
+        await message.reply("Завантажую відео, зачекайте...")
+        try:
+            # Асинхронне завантаження відео
+            video_path = await fetch_instagram_video_url(instagram_match.group())
+            await message.reply(video_path)
+        except Exception as e:
+            # await message.reply(f"Сталася помилка: {str(e)}")
+            pass
+
 
     if 'пон' in text:
         text = text.lower().replace('пон', 'зроз')
@@ -90,6 +120,9 @@ async def no_pon(message: types.Message):
         await bot.send_sticker(message.chat.id,
                                sticker='CAACAgIAAxkBAAPyZWbjRgnCZyLdK0lyLnUSjZlXaHMAAoAyAAIw-WFJvq2p5elOwKozBA')
 
+    if 'мені' in text:
+        await message.reply('Дві гімні')
+
     if 'аніме' in text or 'anime' in text or 'тян' in text or 'дівчин' in text:
         '''
         await message.reply('Пізда тянок поки викрали!\nлови найкращу тян всіх часів і народів!')
@@ -118,6 +151,7 @@ async def no_pon(message: types.Message):
         try:
             with open('/home/galmed/lisorybka_bot/im/kvadrobober.jpg', 'rb') as photo_file:
                 await bot.send_photo(chat_id=message.chat.id, photo=photo_file)
+            await message.reply('Фурі не квадробобери')
         except Exception as e:
             logging.info(f'Помилка при виконанні запиту: {e}')
 
@@ -130,6 +164,9 @@ async def no_pon(message: types.Message):
             await bot.send_sticker(message.chat.id,
                                    'CAACAgIAAxkBAAIFUGbG9MNjI10y7diASU3XBBs-7ZjBAALzTwACdVo4SiNkibf6RrqnNQQ')
             await message.reply("@Andrii_piro @BMaksymko @Spartakusich @Gabenoh")
+
+    if 'dayz' in text or 'дейзі' in text or 'дейз' in text:
+                await message.reply("Загальний збір шкерів по корчам \n@whosvamo @BMaksymko @Spartakusich @Gabenoh")
 
     if 'бот' in text:
         await bot.send_sticker(message.chat.id,
