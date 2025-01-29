@@ -2,10 +2,11 @@ from aiogram import Bot, types
 from aiogram.dispatcher import Dispatcher
 from aiogram.utils import executor
 import random as rd
-from tools import weather, waifu, download_tiktok_video, fetch_instagram_video_url
+from tools import weather, waifu, download_tiktok_video, fetch_instagram_video_url, download_video
 from config import Token
 import logging
 import re
+import os
 import aiohttp
 from aiofiles import open as aio_open
 
@@ -56,6 +57,32 @@ async def send_sticker(message: types.Message):
                                sticker='CAACAgIAAxkBAAEJGL1kbu-SQgJ9gFeXTw4iQOMVc4dHeAACrCoAAj358UjVz4vQxIJj4y8E')
 
 
+async def process_and_send_video(video_url: str, message: types.Message):
+    """
+    Завантажує відео, надсилає його у чат та видаляє файл після цього.
+    """
+    save_path = "video.mp4"  # Тимчасовий файл для збереження відео
+
+    # Завантаження відео
+    await download_video(video_url, save_path)
+
+    # Надсилання відео через Telegram
+    try:
+        async with aio_open(save_path, "rb") as video:
+            await bot.send_video(chat_id=message.chat.id, video=video)
+
+        print("Відео успішно відправлено!")
+    except Exception as e:
+        await message.reply(f"Сталася помилка під час надсилання: {str(e)}")
+    finally:
+        # Видалення файлу після надсилання
+        if os.path.exists(save_path):
+            os.remove(save_path)
+            print(f"Файл {save_path} було видалено.")
+        else:
+            print(f"Файл {save_path} не знайдено для видалення.")
+
+
 @dp.message_handler(content_types=['text'])
 async def no_pon(message: types.Message):
     url_text = str(message.text)
@@ -66,21 +93,20 @@ async def no_pon(message: types.Message):
     instagram_pattern = r"https?://(?:www\.)?instagram\.com/(?:reel|reels|share/reel)/([a-zA-Z0-9_-]+)/?"
     tik_tok_match = re.search(tiktok_url_pattern, url_text)
     instagram_match = re.search(instagram_pattern, url_text)
-    if tik_tok_match:
 
+    # match = tik_tok_match or instagram_match
+    if instagram_match:
+        try:
+            await process_and_send_video(await fetch_instagram_video_url(instagram_match.group()), message)
+        except Exception as e:
+            logging.error(e)
+
+
+    if tik_tok_match:
+        # await message.reply("Завантажую відео, зачекайте...")
         try:
             # Асинхронне завантаження відео
             video_path = await download_tiktok_video(tik_tok_match.group())
-            await message.reply(video_path)
-        except Exception as e:
-            # await message.reply(f"Сталася помилка: {str(e)}")
-            pass
-
-    if instagram_match:
-        await message.reply("Завантажую відео, зачекайте...")
-        try:
-            # Асинхронне завантаження відео
-            video_path = await fetch_instagram_video_url(instagram_match.group())
             await message.reply(video_path)
         except Exception as e:
             # await message.reply(f"Сталася помилка: {str(e)}")
