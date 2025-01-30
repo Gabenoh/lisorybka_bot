@@ -7,7 +7,6 @@ from config import Token
 import logging
 import re
 import os
-import aiohttp
 from aiofiles import open as aio_open
 
 
@@ -61,7 +60,7 @@ async def process_and_send_video(video_url: str, message: types.Message):
     """
     Завантажує відео, надсилає його у чат та видаляє файл після цього.
     """
-    save_path = "video.mp4"  # Тимчасовий файл для збереження відео
+    save_path = "/home/galmed/lisorybka_bot/video.mp4"  # Тимчасовий файл для збереження відео
 
     # Завантаження відео
     await download_video(video_url, save_path)
