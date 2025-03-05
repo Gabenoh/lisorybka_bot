@@ -104,12 +104,21 @@ async def no_pon(message: types.Message):
     if tik_tok_match:
         # await message.reply("Завантажую відео, зачекайте...")
         try:
-            # Асинхронне завантаження відео
-            video_path = await download_tiktok_video(tik_tok_match.group())
-            await message.reply(video_path)
+            file_path = download_tiktok_video(tik_tok_match.group())
+            async with aio_open(file_path, "rb") as video:
+                await bot.send_video(chat_id=message.chat.id, video=video)
+            logging.info(f"{file_path=}")
+            logging.info("Відео успішно відправлено!")
         except Exception as e:
-            # await message.reply(f"Сталася помилка: {str(e)}")
-            pass
+            await message.reply(f"Сталася помилка під час надсилання: {str(e)}")
+        finally:
+            # Видалення файлу після надсилання
+            if os.path.exists(file_path):
+                os.remove(file_path)
+                logging.info(f"Файл {file_path} було видалено.")
+            else:
+                logging.error(f"Файл {file_path} не знайдено для видалення.")
+
 
 
     if 'пон' in text:

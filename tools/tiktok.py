@@ -1,32 +1,39 @@
-import aiohttp
-from config import RAPIDAPI_HOST, RAPIDAPI_KEY
 import logging
-
+import yt_dlp
+import os
 
 logging.basicConfig(filename='/home/galmed/lisorybka_bot/logs/bot.log', level=logging.INFO,
                     format='%(asctime)s - %(levelname)s - %(message)s')
 
+def download_tiktok_video(video_url):
+    """
+    Завантаження відео з TikTok за допомогою yt-dlp
 
-# Асинхронна функція для отримання інформації про відео з TikTok
-async def download_tiktok_video(video_url: str):
+    :param video_url: Посилання на відео TikTok
+    :return: Шлях до збереженого файлу
     """
-    Отримує інформацію про відео з TikTok через RapidAPI.
-    Повертає посилання для завантаження відео.
-    """
-    api_url = "https://tiktok-video-downloader-api.p.rapidapi.com/media"
-    headers = {
-        "x-rapidapi-key": RAPIDAPI_KEY,
-        "x-rapidapi-host": RAPIDAPI_HOST
+    # Фіксований шлях та назва файлу
+    save_path = "/home/galmed/lisorybka_bot/video.mp4"
+
+    # Налаштування параметрів завантаження
+    ydl_opts = {
+        'format': 'mp4',
+        'outtmpl': save_path
     }
-    params = {"videoUrl": video_url}
 
-    async with aiohttp.ClientSession() as session:
-        async with session.get(api_url, headers=headers, params=params) as response:
-            if response.status != 200:
-                error_text = await response.text()
-                logging.error(f"Помилка API. Код статусу: {response.status}, Відповідь: {error_text}")
-                raise Exception(f"Помилка API. Код статусу: {response.status}, Відповідь: {error_text}")
+    try:
+        # Створення об'єкту завантаження
+        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+            # Отримання інформації про відео та завантаження
+            ydl.download([video_url])
 
-            data = await response.json()
-            logging.info(f"Отримано дані: {data}")
-            return data['downloadUrl']
+            logging.info(f"Відео успішно завантажено: {save_path}")
+            return save_path
+
+    except Exception as e:
+        logging.error(f"Помилка при завантаженні відео: {e}")
+        return None
+
+# Приклад використання
+if __name__ == "__main__":
+    print(download_tiktok_video("https://vm.tiktok.com/ZMBekoALN/"))
