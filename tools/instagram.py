@@ -8,7 +8,7 @@ logging.basicConfig(filename='/home/galmed/lisorybka_bot/logs/bot.log', level=lo
 
 
 async def fetch_instagram_video_url(instagram_url: str):
-    base_url = "https://instagram-reels-downloader-api.p.rapidapi.com/download"
+    base_url = "https://instagram-downloader-scraper-reels-igtv-posts-stories.p.rapidapi.com/scraper"
     # Кодуємо URL
     encoded_url = aiohttp.helpers.quote(instagram_url, safe='')
 
@@ -17,7 +17,7 @@ async def fetch_instagram_video_url(instagram_url: str):
 
     headers = {
         'x-rapidapi-key': RAPIDAPI_KEY,
-        'x-rapidapi-host': "instagram-reels-downloader-api.p.rapidapi.com"
+        'x-rapidapi-host': "instagram-downloader-scraper-reels-igtv-posts-stories.p.rapidapi.com"
     }
 
     async with aiohttp.ClientSession() as session:
@@ -29,7 +29,7 @@ async def fetch_instagram_video_url(instagram_url: str):
                 print(f"Помилка запиту: {response.status}")
             data = await response.json()
             logging.info(f"Отримано дані: {data}")
-            print(data['data']['medias'])
+            print(data['data'][0]['media'])
             print(data)
-            print(f"{data['data']['medias'][0]['url']=}")
-            return data['data']['medias'][0]['url']
+            print(f"{data['data'][0]['media']=}")
+            return data['data'][0]['media']
