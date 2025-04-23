@@ -87,8 +87,7 @@ async def no_pon(message: types.Message):
     url_text = str(message.text)
     text = str(message.text.lower())
     b_word = ['блядь', 'блять', 'бля', 'бло']
-
-    tiktok_url_pattern = r"(https?://)?(www\.)?(vm\.tiktok\.com/\w+|tiktok\.com/.+)"
+    tiktok_url_pattern = r"(https?://)?(www\.)?(vm\.tiktok\.com/\w+|vt\.tiktok\.com/\w+|tiktok\.com/.+)"
     instagram_pattern = r"https?://(?:www\.)?instagram\.com/(?:reel|reels|share/reel)/([a-zA-Z0-9_-]+)/?"
     tik_tok_match = re.search(tiktok_url_pattern, url_text)
     instagram_match = re.search(instagram_pattern, url_text)
@@ -97,14 +96,20 @@ async def no_pon(message: types.Message):
     if instagram_match:
         try:
             await process_and_send_video(await fetch_instagram_video_url(instagram_match.group()), message)
+            await bot.delete_message(chat_id=message.chat.id, message_id=message.message_id)
         except Exception as e:
             logging.error(e)
-
 
     if tik_tok_match:
         # await message.reply("Завантажую відео, зачекайте...")
         try:
             file_path = download_tiktok_video(tik_tok_match.group())
+
+            # Перевірка, чи успішно завантажено файл
+            if file_path is None:
+                await message.reply("Не вдалося завантажити відео.")
+                return
+
             async with aio_open(file_path, "rb") as video:
                 await bot.send_video(chat_id=message.chat.id, video=video)
             logging.info(f"{file_path=}")
@@ -112,12 +117,13 @@ async def no_pon(message: types.Message):
         except Exception as e:
             await message.reply(f"Сталася помилка під час надсилання: {str(e)}")
         finally:
-            # Видалення файлу після надсилання
-            if os.path.exists(file_path):
+            await bot.delete_message(chat_id=message.chat.id, message_id=message.message_id)
+            # Видалення файлу після надсилання, тільки якщо file_path не None
+            if file_path and os.path.exists(file_path):
                 os.remove(file_path)
                 logging.info(f"Файл {file_path} було видалено.")
             else:
-                logging.error(f"Файл {file_path} не знайдено для видалення.")
+                logging.error(f"Файл для видалення не знайдено або не завантажено.")
 
 
 

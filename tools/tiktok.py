@@ -14,6 +14,9 @@ def download_tiktok_video(video_url):
     """
     # Фіксований шлях та назва файлу
     save_path = "/home/galmed/lisorybka_bot/video.mp4"
+    
+    if '/vt.' in video_url:
+        video_url = video_url.replace('/vt.', '/vm.')
 
     # Налаштування параметрів завантаження
     ydl_opts = {
