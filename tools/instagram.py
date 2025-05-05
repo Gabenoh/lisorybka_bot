@@ -29,7 +29,4 @@ async def fetch_instagram_video_url(instagram_url: str):
                 print(f"Помилка запиту: {response.status}")
             data = await response.json()
             logging.info(f"Отримано дані: {data}")
-            print(data['data'][0]['media'])
-            print(data)
-            print(f"{data['data'][0]['media']=}")
             return data['data'][0]['media']

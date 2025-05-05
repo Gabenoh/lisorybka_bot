@@ -12,16 +12,40 @@ async def download_video(video_url: str, save_path: str):
     """
     Завантажує відео за посиланням та зберігає його локально.
     """
+    # Імітуємо браузер за допомогою заголовків
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
+        "Accept-Language": "uk,en-US;q=0.7,en;q=0.3",
+        "Accept-Encoding": "gzip, deflate, br",
+        "Referer": video_url,
+        "Connection": "keep-alive",
+        "Upgrade-Insecure-Requests": "1",
+        "Sec-Fetch-Dest": "document",
+        "Sec-Fetch-Mode": "navigate",
+        "Sec-Fetch-Site": "same-origin",
+        "Pragma": "no-cache",
+        "Cache-Control": "no-cache",
+    }
+
     async with aiohttp.ClientSession() as session:
-        async with session.get(video_url) as response:
+        async with session.get(video_url, headers=headers) as response:
             print(f"HTTP статус: {response.status}")  # Виводимо статус
             if response.status == 200:
                 async with aiofiles.open(save_path, "wb") as f:
-                    await f.write(await response.read())
+                    # Завантажуємо по частинах для великих файлів
+                    chunk_size = 1024 * 1024  # 1MB
+                    async for data in response.content.iter_chunked(chunk_size):
+                        await f.write(data)
                 logging.info(f"Відео завантажено: {save_path}")
+                return True
             else:
-                error_text = await response.text()
-                logging.error(f"Помилка {response.status}: {error_text}")
+                try:
+                    error_text = await response.text()
+                    logging.error(f"Помилка {response.status}: {error_text[:200]}")  # Обмежуємо довжину для логу
+                except Exception as e:
+                    logging.error(f"Помилка {response.status}: не вдалося прочитати відповідь ({str(e)})")
+                return False
 
 
 # if __name__ == '__main__':
