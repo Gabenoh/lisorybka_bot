@@ -1,10 +1,12 @@
 from aiogram import Bot, types
 from aiogram.dispatcher import Dispatcher
 from aiogram.utils import executor
+from aiogram.utils.exceptions import InvalidHTTPUrlContent
 import random as rd
 from tools import weather, waifu, download_tiktok_video, fetch_instagram_video_url, download_video
 from config import Token
 import logging
+import asyncio
 import re
 import os
 from aiofiles import open as aio_open
@@ -168,24 +170,11 @@ async def no_pon(message: types.Message):
         await message.reply('Пізда тянок поки викрали!\nлови найкращу тян всіх часів і народів!')
         with open('/home/galmed/lisorybka_bot/im/1.webp', 'rb') as photo_file:
             await bot.send_photo(chat_id=message.chat.id, photo=photo_file)
-
         '''
-        image_url = await waifu()
-        try:
-            await message.reply_photo(image_url)
-        except Exception as e:
-            logging.info(f'Помилка при виконанні запиту: {e}')
-            image_url = await waifu()
-            await message.reply_photo(image_url)
+        await send_waifu_image(message)
 
     if 'хент' in text or 'прон' in text or 'порн' in text:
-        image_url = await waifu(is_nsfw=True)
-        try:
-            await message.reply_photo(image_url)
-        except Exception as e:
-            logging.info(f'Помилка при виконанні запиту: {e}')
-            image_url = await waifu(is_nsfw=True)
-            await message.reply_photo(image_url)
+        await send_waifu_image(message,is_nsfw=True)
 
     if 'kwad' in text or 'бобер' in text or 'квад' in text:
         try:
@@ -256,6 +245,37 @@ async def no_pon(message: types.Message):
         else:
             await message.reply('де де тобі погоду сказати,\nнормально напиши')
 
+
+async def send_waifu_image(message, is_nsfw=False):
+    """
+    Надсилає зображення вайфу користувачу, повторює спроби
+    якщо URL невалідний.
+    """
+    max_attempts = 10  # Максимальна кількість спроб
+
+    for attempt in range(max_attempts):
+        try:
+            # Отримати URL зображення і спробувати надіслати
+            image_url = await waifu(is_nsfw)
+            await message.reply_photo(image_url)
+            return  # Успішне надсилання, виходимо з функції
+
+        except InvalidHTTPUrlContent:
+            # Якщо URL невалідний, чекаємо 3 секунди і пробуємо знову
+            logging.error('Не вірний URL пробую ще раз')
+            if attempt < max_attempts - 1:  # Якщо це не остання спроба
+                await asyncio.sleep(3)
+
+        except Exception as e:
+            # Інші помилки
+            logging.info(f'Помилка при надсиланні зображення: {e}')
+            if attempt < max_attempts - 1:
+                await asyncio.sleep(3)
+
+    # Якщо всі спроби невдалі
+    await message.reply("На жаль, не вдалося завантажити зображення тянки. Але у мене є дещо краще")
+    with open('/home/galmed/lisorybka_bot/im/1.webp', 'rb') as photo_file:
+        await bot.send_photo(chat_id=message.chat.id, photo=photo_file)
 
 if __name__ == '__main__':
     executor.start_polling(dp)

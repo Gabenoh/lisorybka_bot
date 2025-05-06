@@ -41,6 +41,7 @@ async def waifu(is_nsfw=False):
         return result
     else:
         logging.info('Не вдалося здійснити запит.')
+        return None
 
 
 if __name__ == "__main__":
