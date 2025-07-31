@@ -70,7 +70,8 @@ async def process_and_send_video(video_url: str, message: types.Message):
     # Надсилання відео через Telegram
     try:
         async with aio_open(save_path, "rb") as video:
-            await bot.send_video(chat_id=message.chat.id, video=video)
+            await bot.send_video(chat_id=message.chat.id, video=video, disable_notification=True,
+                                 caption=f"Надіслав @{message.from_user.username or f'користувач ID: {message.from_user.id}'}")
 
         print("Відео успішно відправлено!")
     except Exception as e:
@@ -113,7 +114,8 @@ async def no_pon(message: types.Message):
                 return
 
             async with aio_open(file_path, "rb") as video:
-                await bot.send_video(chat_id=message.chat.id, video=video)
+                await bot.send_video(chat_id=message.chat.id, video=video, disable_notification=True,
+                                 caption=f"Надіслав @{message.from_user.username or f'користувач ID: {message.from_user.id}'}")
             logging.info(f"{file_path=}")
             logging.info("Відео успішно відправлено!")
         except Exception as e:
