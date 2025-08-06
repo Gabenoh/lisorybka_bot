@@ -71,7 +71,7 @@ async def process_and_send_video(video_url: str, message: types.Message):
     try:
         async with aio_open(save_path, "rb") as video:
             await bot.send_video(chat_id=message.chat.id, video=video, disable_notification=True,
-                                 caption=f"Надіслав @{message.from_user.username or f'користувач ID: {message.from_user.id}'}")
+                                 caption=await video_caption(message))
 
         print("Відео успішно відправлено!")
     except Exception as e:
@@ -84,6 +84,11 @@ async def process_and_send_video(video_url: str, message: types.Message):
         else:
             print(f"Файл {save_path} не знайдено для видалення.")
 
+async def video_caption(message:types.Message):
+    if message.from_user.username == 'annarabik':
+        return 'Надіслала кохана бусінка ❤️'
+    else:
+        return f"Надіслав @{message.from_user.username or f'користувач ID: {message.from_user.id}'}"
 
 @dp.message_handler(content_types=['text'])
 async def no_pon(message: types.Message):
@@ -115,7 +120,7 @@ async def no_pon(message: types.Message):
 
             async with aio_open(file_path, "rb") as video:
                 await bot.send_video(chat_id=message.chat.id, video=video, disable_notification=True,
-                                 caption=f"Надіслав @{message.from_user.username or f'користувач ID: {message.from_user.id}'}")
+                                 caption=await video_caption(message))
             logging.info(f"{file_path=}")
             logging.info("Відео успішно відправлено!")
         except Exception as e:
