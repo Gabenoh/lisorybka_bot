@@ -8,17 +8,17 @@ logging.basicConfig(filename='/home/galmed/lisorybka_bot/logs/bot.log', level=lo
                     format='%(asctime)s - %(levelname)s - %(message)s')
 
 
-async def search_waifu(is_nsfw=False):
-    url = 'https://api.waifu.im/search'
-    if random.randint(0, 10) >= 9 or is_nsfw:
+async def search_waifu(IsNsfw=False):
+    url = 'https://api.waifu.im/images'
+    if random.randint(0, 10) >= 9 or IsNsfw:
         params = {
             'height': '>=500',
-            'is_nsfw': 'true'
+            'IsNsfw': 'true'
         }
     else:
         params = {
             'height': '>=500',
-            'is_nsfw': 'false'
+            'IsNsfw': 'false'
         }
 
     try:
@@ -27,14 +27,14 @@ async def search_waifu(is_nsfw=False):
                 print(params)
                 response.raise_for_status()  # Перевіряємо, чи не виникла помилка при запиті
                 data = await response.json()
-                return data['images'][0]['url']
+                return data['items'][0]['url']
     except aiohttp.ClientError as e:
         logging.info(f'Помилка при виконанні запиту: {e}')
         return None
 
 
-async def waifu(is_nsfw=False):
-    result = await search_waifu(is_nsfw)
+async def waifu(IsNsfw=False):
+    result = await search_waifu(IsNsfw)
 
     if result:
         logging.info(result)

@@ -2,9 +2,11 @@ from aiogram import Bot, types
 from aiogram.dispatcher import Dispatcher
 from aiogram.utils import executor
 from aiogram.utils.exceptions import InvalidHTTPUrlContent
+from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 import random as rd
 from tools import weather, waifu, download_tiktok_video, fetch_instagram_video_url, download_video
-from config import Token
+from tools.servers import execute_server_command, get_servers_list, server_exists
+from config import Token, PASSWORD
 import logging
 import asyncio
 import re
@@ -90,10 +92,116 @@ async def video_caption(message:types.Message):
     else:
         return f"Надіслав @{message.from_user.username or f'користувач ID: {message.from_user.id}'}"
 
+
+@dp.message_handler(commands=['servers'])
+async def show_servers(message: types.Message):
+    """Показує список доступних серверів з кнопками"""
+    servers = get_servers_list()
+
+    if not servers:
+        await message.reply("❌ Немає доступних серверів")
+        return
+
+    keyboard = InlineKeyboardMarkup()
+
+    for server_key, server_info in servers.items():
+        button = InlineKeyboardButton(
+            text=f"🎮 {server_info['name']}",
+            callback_data=f"server_select:{server_key}"
+        )
+        keyboard.add(button)
+
+    await message.reply("📋 Доступні сервери:", reply_markup=keyboard)
+
+
+@dp.callback_query_handler(lambda c: c.data.startswith('server_select:'))
+async def show_server_controls(callback_query: types.CallbackQuery):
+    """Показує кнопки керування для вибраного сервера"""
+    server_key = callback_query.data.split(':')[1]
+
+    if not server_exists(server_key):
+        await callback_query.answer("❌ Сервер не знайдено!", show_alert=True)
+        return
+
+    servers = get_servers_list()
+    server_name = servers[server_key]['name']
+
+    # Клавіатура з командами керування
+    keyboard = InlineKeyboardMarkup()
+    keyboard.add(InlineKeyboardButton(
+        text="▶️ Start",
+        callback_data=f"server_control:{server_key}:start"
+    ))
+    keyboard.add(InlineKeyboardButton(
+        text="⏹️ Stop",
+        callback_data=f"server_control:{server_key}:stop"
+    ))
+    keyboard.add(InlineKeyboardButton(
+        text="🔄 Reboot",
+        callback_data=f"server_control:{server_key}:restart"
+    ))
+    keyboard.add(InlineKeyboardButton(
+        text="⬅️ Назад",
+        callback_data="back_to_servers"
+    ))
+
+    await callback_query.message.edit_text(
+        f"🎮 **{server_name}**\n\nВибери дію:",
+        reply_markup=keyboard,
+        parse_mode="Markdown"
+    )
+    await callback_query.answer()
+
+
+@dp.callback_query_handler(lambda c: c.data.startswith('server_control:'))
+async def handle_server_control(callback_query: types.CallbackQuery):
+    """Обробляє команди керування сервером"""
+    parts = callback_query.data.split(':')
+    server_key = parts[1]
+    action = parts[2]
+
+    if not server_exists(server_key):
+        await callback_query.answer("❌ Сервер не знайдено!", show_alert=True)
+        return
+
+    servers = get_servers_list()
+    server_name = servers[server_key]['name']
+
+    # Показуємо статус, що команда виконується
+    await callback_query.message.edit_text(
+        f"⏳ Виконую команду **{action}** для **{server_name}**...",
+        parse_mode="Markdown"
+    )
+
+    # Виконуємо команду (передаємо пароль якщо він встановлений)
+    success, message_text = await execute_server_command(server_key, action, PASSWORD)
+
+    # Формуємо відповідь
+    keyboard = InlineKeyboardMarkup()
+    keyboard.add(InlineKeyboardButton(
+        text="⬅️ Назад",
+        callback_data=f"server_select:{server_key}"
+    ))
+
+    await callback_query.message.edit_text(
+        f"**{server_name}**\n\n{message_text}",
+        reply_markup=keyboard,
+        parse_mode="Markdown"
+    )
+    await callback_query.answer()
+
+
+@dp.callback_query_handler(lambda c: c.data == 'back_to_servers')
+async def back_to_servers(callback_query: types.CallbackQuery):
+    """Повертає до списку серверів"""
+    await show_servers(callback_query.message)
+    await callback_query.answer()
+
 @dp.message_handler(content_types=['text'])
 async def no_pon(message: types.Message):
     url_text = str(message.text)
     text = str(message.text.lower())
+    text_split = text.split()
     b_word = ['блядь', 'блять', 'бля', 'бло']
     tiktok_url_pattern = r"(https?://)?(www\.)?(vm\.tiktok\.com/\w+|vt\.tiktok\.com/\w+|tiktok\.com/.+)"
     instagram_pattern = r"https?://(?:www\.)?instagram\.com/(?:reel|reels|share/reel)/([a-zA-Z0-9_-]+)/?"
@@ -135,7 +243,6 @@ async def no_pon(message: types.Message):
                 logging.error(f"Файл для видалення не знайдено або не завантажено.")
 
 
-
     if 'пон' in text:
         text = text.lower().replace('пон', 'зроз')
 
@@ -150,6 +257,9 @@ async def no_pon(message: types.Message):
 
     if 'бачу' in text:
         await message.reply('Поцілуй пизду собачу')
+
+    if 'так' in text_split:
+            await message.reply("Хуєм об п'ятак")
 
     if 'кох' in text or 'танк' in text:
         await bot.send_sticker(message.chat.id,
